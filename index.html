@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CCTV Kabupaten Purworejo</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav id="mainNavbar" class="navbar navbar-expand-lg fixed-top px-4 py-3">
+    <div class="container">
+      <a class="navbar-brand fw-bold text-white" href="#">
+        <i class="fas fa-video me-2"></i>CCTV Purworejo
+      </a>
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar">
+        <i class="fas fa-bars text-white"></i>
+      </button>
+      <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasNavbar">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title fw-bold"><i class="fas fa-video me-2"></i>CCTV Purworejo</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body">
+          <ul class="navbar-nav justify-content-center flex-grow-1">
+            <li class="nav-item"><a class="nav-link text-white" data-bs-dismiss="offcanvas" href="#hero">Beranda</a></li>
+            <li class="nav-item"><a class="nav-link text-white" data-bs-dismiss="offcanvas" href="#map-section">Peta CCTV</a></li>
+            <li class="nav-item"><a class="nav-link text-white" data-bs-dismiss="offcanvas" href="#stream-section">Live Streaming</a></li>
+            <li class="nav-item"><a class="nav-link text-white" data-bs-dismiss="offcanvas" href="#about-section">Tentang</a></li>
+          </ul>
+          <div class="mt-3 mt-lg-0">
+            <a data-bs-dismiss="offcanvas" href="#stream-section" class="btn btn-light btn-sm rounded-pill px-3 w-100 w-lg-auto">
+              <i class="fas fa-play-circle me-1"></i> Tonton Sekarang
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <!-- End Navbar -->
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="hero-overlay"></div>
+    <div class="container position-relative">
+      <div class="row align-items-center">
+        <div class="col-lg-6 col-md-12 hero-content">
+          <div class="badge bg-primary-light mb-3 animate-up">Sistem Monitoring Publik</div>
+          <h1 class="animate-up delay-1">CCTV Kabupaten Purworejo</h1>
+          <p class="animate-up delay-2">Pantau kondisi terkini dari berbagai wilayah Kabupaten Purworejo secara real-time melalui kamera CCTV publik yang tersebar di seluruh penjuru daerah.</p>
+          <div class="button-group animate-up delay-3">
+            <a href="#map-section" class="btn btn-primary">
+              <i class="fas fa-map-marker-alt me-2"></i>Lihat Peta
+            </a>
+            <a href="#stream-section" class="btn btn-light">
+              <i class="fas fa-video me-2"></i>Tonton Live
+            </a>
+          </div>
+          <div class="stats-row animate-up delay-4">
+            <div class="stat-item">
+              <span class="stat-number">24</span>
+              <span class="stat-label">CCTV</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-number">12</span>
+              <span class="stat-label">Lokasi</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-number">24/7</span>
+              <span class="stat-label">Monitoring</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-12 position-relative">
+          <div class="hero-image text-center animate-up delay-2">
+            <img src="https://png.pngtree.com/png-vector/20240715/ourmid/pngtree-cctv-camera-3d-image-png-image_13106033.png" alt="Ilustrasi CCTV" class="img-fluid">
+            <div class="blob-shape"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Wave SVG -->
+    <div class="wave-container">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+        <path fill="#ffffff" fill-opacity="1" d="M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,181.3C960,181,1056,235,1152,234.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+      </svg>
+    </div>
+  </section>
+  <!-- End Hero Section -->
+
+  <!-- Lokasi Section -->
+  <section id="map-section" class="py-5">
+    <div class="container">
+      <div class="section-header text-center mb-5">
+        <h6 class="text-primary fw-bold text-uppercase">Lokasi</h6>
+        <h2>Peta CCTV Purworejo</h2>
+        <p class="text-muted">Temukan lokasi kamera CCTV di seluruh wilayah Kabupaten Purworejo</p>
+      </div>
+      <div class="row">
+        <div class="col-lg-8 mb-4 mb-lg-0">
+          <div class="map-container">
+            <div id="map"></div>
+            <div class="map-overlay">
+              <div class="map-controls">
+                <button class="map-control-btn" id="zoomIn"><i class="fas fa-plus"></i></button>
+                <button class="map-control-btn" id="zoomOut"><i class="fas fa-minus"></i></button>
+                <button class="map-control-btn" id="recenter"><i class="fas fa-location-crosshairs"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="location-list-container">
+            <h5 class="mb-3">Lokasi CCTV</h5>
+            <div class="input-group mb-3">
+              <span class="input-group-text bg-white border-end-0"><i class="fas fa-search text-muted"></i></span>
+              <input type="text" id="locationSearch" class="form-control border-start-0" placeholder="Cari lokasi...">
+            </div>
+            <div class="location-list" id="locationList">
+              <!-- in script.js -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- End Lokasi Section -->
+
+  <!-- Live Streaming -->
+  <section id="stream-section" class="py-5 bg-light">
+    <div class="container">
+      <div class="section-header text-center mb-5">
+        <h6 class="text-primary fw-bold text-uppercase">Monitoring</h6>
+        <h2>Live Streaming CCTV</h2>
+        <p class="text-muted">Pantau kondisi lalu lintas dan tempat umum secara langsung</p>
+      </div>
+      
+      <div class="row mb-4">
+        <div class="col-md-6 col-lg-4 mb-3">
+          <div class="stream-filter-card active" data-filter="all">
+            <i class="fas fa-video"></i>
+            <span>Semua CCTV</span>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4 mb-3">
+          <div class="stream-filter-card" data-filter="traffic">
+            <i class="fas fa-road"></i>
+            <span>Lalu Lintas</span>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4 mb-3">
+          <div class="stream-filter-card" data-filter="public">
+            <i class="fas fa-users"></i>
+            <span>Tempat Umum</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="search-container mb-4">
+        <div class="input-group">
+          <span class="input-group-text bg-white border-end-0"><i class="fas fa-search text-muted"></i></span>
+          <input type="text" id="searchInput" class="form-control border-start-0" placeholder="Cari berdasarkan judul atau lokasi...">
+        </div>
+      </div>
+
+      <div class="row" id="videoList">
+        <!-- in script.js -->
+      </div>
+
+      <div class="text-center mt-4">
+        <button id="loadMoreBtn" class="btn btn-outline-primary rounded-pill px-4">
+          <i class="fas fa-plus-circle me-2"></i>Tampilkan Lebih Banyak
+        </button>
+      </div>
+    </div>
+  </section>
+  <!-- End Live Streaming -->
+
+  <!-- Tentang Section -->
+  <section id="about-section" class="py-5">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+          <div class="about-image">
+            <img src="https://png.pngtree.com/png-vector/20240715/ourmid/pngtree-cctv-camera-3d-image-png-image_13106033.png" alt="About CCTV" class="img-fluid">
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <h6 class="text-primary fw-bold text-uppercase">Tentang</h6>
+          <h2 class="mb-4">Sistem Monitoring CCTV Kabupaten Purworejo</h2>
+          <p>Sistem CCTV Kabupaten Purworejo merupakan inisiatif pemerintah daerah untuk meningkatkan keamanan dan pemantauan lalu lintas di seluruh wilayah kabupaten. Dengan adanya sistem ini, masyarakat dapat dengan mudah memantau kondisi jalan dan tempat-tempat umum secara real-time.</p>
+          
+          <div class="features-grid">
+            <div class="feature-item">
+              <div class="feature-icon">
+                <i class="fas fa-clock"></i>
+              </div>
+              <h5>Monitoring 24/7</h5>
+              <p>Pemantauan non-stop sepanjang waktu</p>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon">
+                <i class="fas fa-map-marked-alt"></i>
+              </div>
+              <h5>Lokasi Strategis</h5>
+              <p>Ditempatkan di area penting dan rawan</p>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon">
+                <i class="fas fa-shield-alt"></i>
+              </div>
+              <h5>Keamanan</h5>
+              <p>Meningkatkan keamanan publik</p>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon">
+                <i class="fas fa-tachometer-alt"></i>
+              </div>
+              <h5>Kualitas HD</h5>
+              <p>Gambar jernih dan detail</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- End Tentang Section -->
+
+  <!-- Footer -->
+  <div id="ww_6ff596cf9dba5" v='1.3' loc='id' a='{"t":"responsive","lang":"id","sl_lpl":1,"ids":["wl2603"],"font":"Arial","sl_ics":"one_a","sl_sot":"celsius","cl_bkg":"image","cl_font":"#FFFFFF","cl_cloud":"#FFFFFF","cl_persp":"#81D4FA","cl_sun":"#FFC107","cl_moon":"#FFC107","cl_thund":"#FF5722","sl_tof":"7"}'>More forecasts: <a href="https://oneweather.org/orlando/30_days/" id="ww_6ff596cf9dba5_u" target="_blank">30 day Orlando weather</a></div><script async src="https://app3.weatherwidget.org/js/?id=ww_6ff596cf9dba5"></script>
+  <footer class="footer py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-5 mb-4 mb-lg-0">
+          <h4 class="text-white mb-4"><i class="fas fa-video me-2"></i>CCTV Purworejo</h4>
+          <p class="text-white-50">Sistem pemantauan CCTV untuk keamanan dan kenyamanan masyarakat Kabupaten Purworejo.</p>
+          <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+          <h5 class="text-white mb-4">Tautan</h5>
+          <ul class="footer-links">
+            <li><a href="#hero">Beranda</a></li>
+            <li><a href="#map-section">Peta CCTV</a></li>
+            <li><a href="#stream-section">Live Streaming</a></li>
+            <li><a href="#about-section">Tentang</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+          <h5 class="text-white mb-4">Hubungi Kami</h5>
+          <ul class="contact-info">
+            <li><i class="fas fa-map-marker-alt"></i> Jl. Proklamasi No. 2 Purworejo</li>
+            <li><i class="fas fa-phone-alt"></i> (0275) 321493</li>
+            <li><i class="fas fa-envelope"></i> dinkominfo@purworejokab.go.id</li>
+          </ul>
+        </div>
+      </div>
+      <hr class="footer-divider">
+      <div class="row">
+        <div class="col-md-6 text-center text-md-start">
+          <p class="mb-0 text-white-50">&copy; 2025 CCTV Kabupaten Purworejo. All rights reserved.</p>
+        </div>
+        <div class="col-md-6 text-center text-md-end">
+          <p class="mb-0 text-white-50">Developed by Diskominfo Purworejo</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- End Footer -->
+
+  <!-- Video Modal -->
+  <div class="modal fade" id="videoModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalTitle"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body position-relative modal-video">
+          <iframe id="videoFrame" width="100%" height="450" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          <div class="video-info">
+            <div class="video-location" id="modalLocation">
+              <i class="fas fa-map-marker-alt"></i> <span></span>
+            </div>
+            <div class="video-status">
+              <span class="status-dot"></span> Live
+            </div>
+          </div>
+          <img src="image.png" alt="Logo" class="logo-corner">
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Video Modal -->
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
