@@ -11,34 +11,32 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // ===== Smooth Scrolling =====
-  // ===== Smooth Scrolling + Offcanvas Hide =====
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function (e) {
-    e.preventDefault();
-    const targetId = this.getAttribute('href');
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href');
 
-    if (targetId === '#') return;
+      if (targetId === '#') return;
 
-    const targetElement = document.querySelector(targetId);
-    if (targetElement) {
-      const navbarHeight = document.getElementById('mainNavbar').offsetHeight;
-      const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
+      const targetElement = document.querySelector(targetId);
+      if (targetElement) {
+        const navbarHeight = document.getElementById('mainNavbar').offsetHeight;
+        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
 
-      window.scrollTo({
-        top: targetPosition,
-        behavior: 'smooth'
-      });
+        window.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth'
+        });
 
-      // Tutup offcanvas kalau terbuka
-      const offcanvasEl = document.getElementById('offcanvasNavbar');
-      const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasEl);
-      if (offcanvas) {
-        offcanvas.hide();
+        // Tutup offcanvas kalau terbuka
+        const offcanvasEl = document.getElementById('offcanvasNavbar');
+        const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasEl);
+        if (offcanvas) {
+          offcanvas.hide();
+        }
       }
-    }
+    });
   });
-});
-
 
   // ===== Peta =====
   const cctvLocations = [
@@ -49,8 +47,8 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     { id: 5, name: "Stasuin Wojo", lat: -7.862729119045524, lng: 110.0396328676768, type: "traffic", description: "Jalan protokol utama" },
   ];
 
-  const purworejoCenter = [-7.7131, 110.0146];
-  const map = L.map('map').setView(purworejoCenter, 13);
+  const purworejoCenter = [-7.716, 109.9699];
+  const map = L.map('map', {zoomControl: false}).setView(purworejoCenter, 11);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
@@ -59,7 +57,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
   // Marker icon
   const cctvIcon = L.icon({
-    iconUrl: 'https://pelindung.bandung.go.id/static/media/pin.57eb90b3f5608d64becc.png', //ganti
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/7400/7400432.png',
     iconSize: [30, 30],
     iconAnchor: [15, 15],
     popupAnchor: [0, -15]
@@ -92,6 +90,25 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     markers[location.id] = marker;
   });
 
+  // Add pane from geojson
+  map.createPane('kabupaten');
+  map.getPane('kabupaten').style.zIndex = 400;
+
+  fetch('purworejo.geojson')
+    .then(res => res.json())
+    .then(data => {
+      L.geoJSON(data, {
+        pane: 'kabupaten',
+        style: {
+          color: '#2186d1',
+          weight: 2,
+          fillColor: '#399cdf',
+          fillOpacity: 0.3,
+          dashArray: '8 4'
+        }
+      }).addTo(map);
+    })
+  
   // Map controls
   document.getElementById('zoomIn').addEventListener('click', function() {
     map.zoomIn();
@@ -102,7 +119,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   });
 
   document.getElementById('recenter').addEventListener('click', function() {
-    map.setView(purworejoCenter, 13);
+    map.setView(purworejoCenter, 11);
   });
 
   // ===== Populate Location List =====
@@ -157,9 +174,9 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   const videoData = [
     { id: 1, title: "CCTV ROMANSA PURWOREJO", location: "Romansa Kuliner", type: "public", src: "DOOrIxw5xOw" },
     { id: 2, title: "CCTV BUH LIWUNG", location: "Jembatan Bogowonto", type: "traffic", src: "yNKvkPJl-tg" },
-    { id: 3, title: "CCTV BATAS MAGELANG", location: "Tugu Perbatasan", type: "traffic", src: "cFK5o5OJx_E" },
-    { id: 4, title: "CCTV JOGOBOYO", location: "Jl. Daendels", type: "traffic",  src: "dkwPqVIR4n4" },
-    { id: 5, title: "CCTV STASIUN WOJO", location: "Jalan Nasional", type: "traffic", src: "j0sJjQhScCQ" },
+    { id: 3, title: "CCTV BATAS MAGELANG", location: "Tugu Perbatasan", type: "traffic", src: "Bx6Vujv1bPg" },
+    { id: 4, title: "CCTV JOGOBOYO", location: "Jl. Daendels", type: "traffic",  src: "mxDcf-RKgTc" },
+    { id: 5, title: "CCTV STASIUN WOJO", location: "Jalan Nasional", type: "traffic", src: "m6KQo1Opf34" },
   ];
 
   const videoList = document.getElementById('videoList');
@@ -262,7 +279,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     
     // YouTube embed
     const videoFrame = document.getElementById('videoFrame');
-    videoFrame.src = `https://www.youtube.com/embed/${video.src}?autoplay=1&controls=0&showinfo=0&rel=0&loop=0&wmode=transparent`;
+    videoFrame.src = `https://www.youtube-nocookie.com/embed/${video.src}?hd=1&autoplay=1&autoplay=1&controls=0&fs=0&modestbranding=1&rel=0`;
     
     videoModal.show();
   }
