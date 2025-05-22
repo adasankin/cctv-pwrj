@@ -45,6 +45,8 @@ document.addEventListener('DOMContentLoaded', function() {
     { id: 3, name: "Batas Magelang", lat: -7.576540676039513, lng: 110.07470796470817, type: "traffic", description: "Pantau arus lalu lintas utama" },
     { id: 4, name: "Jogoboyo", lat: -7.884068352807211, lng: 110.03425048477878, type: "traffic", description: "Jalan Raya Pos arah Jogja" },
     { id: 5, name: "Stasuin Wojo", lat: -7.862729119045524, lng: 110.0396328676768, type: "traffic", description: "Jalan protokol utama" },
+  	{ id: 6, name: "Arta Tirta", lat: -7.862729119045524, lng: 110.0396328676768, type: "traffic", description: "Jalan protokol utama" },
+  	{ id: 7, name: "Taman Bagelen", lat: -7.812006292278081, lng: 110.01721358440874, type: "traffic", description: "Pantau arus lalu lintas utama" },
   ];
 
   const purworejoCenter = [-7.716, 109.9699];
@@ -71,19 +73,18 @@ document.addEventListener('DOMContentLoaded', function() {
       .bindPopup(`
         <div class="popup-content">
           <h6>${location.name}</h6>
-          <p>${location.description}</p>
           <button class="btn btn-sm btn-primary mt-2 view-stream-btn" data-id="${location.id}">
-            <i class="fas fa-video me-1"></i> Lihat Stream
+            <i class="fas fa-video me-1"></i> Pantau Lokasi
           </button>
         </div>
       `);
     
     marker.on('popupopen', function() {
-      document.querySelectorAll('.view-stream-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-          const id = parseInt(this.getAttribute('data-id'));
+      document.addEventListener('click', function (e) {
+        if (e.target.classList.contains('view-stream-btn')) {
+          const id = parseInt(e.target.getAttribute('data-id'));
           openVideoModal(id);
-        });
+        }
       });
     });
     
@@ -172,11 +173,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // ===== Video Streaming =====
   const videoData = [
-    { id: 1, title: "CCTV ROMANSA PURWOREJO", location: "Romansa Kuliner", type: "public", src: "DOOrIxw5xOw" },
-    { id: 2, title: "CCTV BUH LIWUNG", location: "Jembatan Bogowonto", type: "traffic", src: "yNKvkPJl-tg" },
-    { id: 3, title: "CCTV BATAS MAGELANG", location: "Tugu Perbatasan", type: "traffic", src: "Bx6Vujv1bPg" },
-    { id: 4, title: "CCTV JOGOBOYO", location: "Jl. Daendels", type: "traffic",  src: "mxDcf-RKgTc" },
-    { id: 5, title: "CCTV STASIUN WOJO", location: "Jalan Nasional", type: "traffic", src: "m6KQo1Opf34" },
+    { id: 1, title: "CCTV ROMANSA PURWOREJO", location: "Jl. Proklamasi-Plaosan-Purworejo", type: "public", src: "48m_oFTx2co" },
+    { id: 2, title: "CCTV BUH LIWUNG", location: "Jl. WR Supratman No.90-Tambakrejo-Purworejo", type: "traffic", src: "qF1PY4BUKAg" },
+    { id: 3, title: "CCTV BATAS MAGELANG", location: "Kalijambe-Bener-Purworejo", type: "traffic",  src: "ZgWEZfYAI2g" },
+  	{ id: 4, title: "CCTV JOGO BOYO", location: "Jl. Daendels-Congot-Jogoboyo", type: "traffic",  src: "C-NogB3LLkM" },
+    { id: 5, title: "CCTV STASIUN WOJO", location: "Jl. Wates-Bagelen-Purworejo", type: "traffic", src: "OuMXkbHH_rE" },
+	  { id: 6, title: "CCTV SIMPANG ARTA TIRTA", location: "Jl. Magelang-Purworejo", type: "traffic", src: "x-KzzPRzdxQ" },
+    { id: 7, title: "CCTV TAMAN BAGELEN", location: "Jl. Bagelen - Cangkrep-Purworejo", type: "traffic", src: "3Xq0QoQtqHQ" },
   ];
 
   const videoList = document.getElementById('videoList');
@@ -213,7 +216,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <h5 class="card-title">${video.title}</h5>
             <div class="d-flex justify-content-between align-items-center mt-2">
               <p class="card-text text-muted mb-0">${video.location}</p>
-              <img src="image.png" class="video-logo" alt="Logo">
+              <img src="assets/image.png" class="video-logo" alt="Logo">
             </div>
           </div>
         </div>
@@ -274,12 +277,15 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (!video) return;
     
-    document.getElementById('modalTitle').textContent = video.title;
+    document.getElementById('modalTitle').innerHTML = `
+      <span class="title-dot"></span>
+      ${video.title}
+    `;
     document.getElementById('modalLocation').querySelector('span').textContent = video.location;
     
     // YouTube embed
     const videoFrame = document.getElementById('videoFrame');
-    videoFrame.src = `https://www.youtube-nocookie.com/embed/${video.src}?hd=1&autoplay=1&autoplay=1&controls=0&fs=0&modestbranding=1&rel=0`;
+    videoFrame.src = `https://www.youtube-nocookie.com/embed/${video.src}?hd=1&autoplay=1&controls=0&fs=0&modestbranding=1&rel=0`;
     
     videoModal.show();
   }
@@ -287,4 +293,54 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('videoModal').addEventListener('hidden.bs.modal', function() {
     document.getElementById('videoFrame').src = '';
   });
+
+  // ===== Dark / Light Mode Toggle =====
+  const themeToggle = document.getElementById('themeToggle');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const savedTheme = localStorage.getItem('theme');
+
+  function applyTheme(theme) {
+    if (theme === 'dark') {
+      document.body.classList.add('dark-mode');
+      themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+    } else {
+      document.body.classList.remove('dark-mode');
+      themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+  }
+
+  const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
+  applyTheme(initialTheme);
+
+  themeToggle.addEventListener('click', function () {
+    const currentTheme = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('theme', newTheme);
+    applyTheme(newTheme);
+  });
+
+  // === Scroll to Top ===
+  const scrollTopBtn = document.getElementById("scrollTopBtn");
+
+  window.addEventListener("scroll", () => {
+    scrollTopBtn.classList.toggle("show", window.scrollY > 200);
+  });
+
+  scrollTopBtn.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  // ===== No Spy UI =====
+  // document.addEventListener("contextmenu", function(event) {
+  //   event.preventDefault();
+  // });
+
+  // document.addEventListener("keydown", function(event) {
+  //   if (event.ctrlKey && (event.key === "u" || event.key === "i" || event.key === "j" || event.key === "c")) {
+  //       event.preventDefault();
+  //   }
+  //   if (event.key === "F12") {
+  //       event.preventDefault();
+  //   }
+  // });
 });
