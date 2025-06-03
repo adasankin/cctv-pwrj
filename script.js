@@ -45,8 +45,17 @@ document.addEventListener('DOMContentLoaded', function() {
     { id: 3, name: "Batas Magelang", lat: -7.576540676039513, lng: 110.07470796470817, type: "traffic", description: "Pantau arus lalu lintas utama" },
     { id: 4, name: "Jogoboyo", lat: -7.884068352807211, lng: 110.03425048477878, type: "traffic", description: "Jalan Raya Pos arah Jogja" },
     { id: 5, name: "Stasuin Wojo", lat: -7.862729119045524, lng: 110.0396328676768, type: "traffic", description: "Jalan protokol utama" },
-  	{ id: 6, name: "Arta Tirta", lat: -7.862729119045524, lng: 110.0396328676768, type: "traffic", description: "Jalan protokol utama" },
+    { id: 6, name: "Arta Tirta", lat: -7.702063091336097, lng:  110.02375162046432, type: "traffic", description: "Jalan protokol utama" },
   	{ id: 7, name: "Taman Bagelen", lat: -7.812006292278081, lng: 110.01721358440874, type: "traffic", description: "Pantau arus lalu lintas utama" },
+  	{ id: 8, name: "Simpang Brengkelan", lat: -7.705041510009259, lng: 110.01794231933943, type: "traffic", description: "Jalan protokol utama" },
+  	{ id: 9, name: "Taman Kota", lat: -7.701593654308409, lng: 110.02581817013515, type: "public", description: "Pantau aktivitas di pusat kota" },
+  	{ id: 10, name: "Taman Kresna Duta", lat: -7.719061418506868, lng: 110.00581544842935, type: "public", description: "Ruang terbuka hijau" },
+  	{ id: 11, name: "Alun-alun Kutoarjo", lat: -7.720515257959845, lng: 109.91477782122547, type: "traffic", description: "Jalan protokol utama" },
+  	{ id: 12, name: "Jl. KHA Dahlan", lat: -7.708498264169766, lng: 110.01751514485235, type: "traffic", description: "Pantau area perbelanjaan kota" },
+  	{ id: 13, name: "Depan Jodo Plaza", lat: -7.708484974316059, lng: 110.01754464915192, type: "traffic", description: "Pantau area perbelanjaan kota" },
+    
+  	{ id: 14, name: "Alun-alun Kutoarjo", lat: -7.720515257959845, lng: 109.91477782122547, type: "traffic", description: "Jalan protokol utama" },
+  	{ id: 15, name: "Alun-alun Kutoarjo", lat: -7.720515257959845, lng: 109.91477782122547, type: "traffic", description: "Jalan protokol utama" },
   ];
 
   const purworejoCenter = [-7.716, 109.9699];
@@ -79,13 +88,11 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
       `);
     
-    marker.on('popupopen', function() {
-      document.addEventListener('click', function (e) {
-        if (e.target.classList.contains('view-stream-btn')) {
-          const id = parseInt(e.target.getAttribute('data-id'));
-          openVideoModal(id);
-        }
-      });
+    document.addEventListener('click', function (e) {
+      if (e.target.classList.contains('view-stream-btn')) {
+        const id = parseInt(e.target.getAttribute('data-id'));
+        openVideoModal(id);
+      }
     });
     
     markers[location.id] = marker;
@@ -173,13 +180,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // ===== Video Streaming =====
   const videoData = [
-    { id: 1, title: "CCTV ROMANSA PURWOREJO", location: "Jl. Proklamasi-Plaosan-Purworejo", type: "public", src: "48m_oFTx2co" },
-    { id: 2, title: "CCTV BUH LIWUNG", location: "Jl. WR Supratman No.90-Tambakrejo-Purworejo", type: "traffic", src: "qF1PY4BUKAg" },
-    { id: 3, title: "CCTV BATAS MAGELANG", location: "Kalijambe-Bener-Purworejo", type: "traffic",  src: "ZgWEZfYAI2g" },
-  	{ id: 4, title: "CCTV JOGO BOYO", location: "Jl. Daendels-Congot-Jogoboyo", type: "traffic",  src: "C-NogB3LLkM" },
-    { id: 5, title: "CCTV STASIUN WOJO", location: "Jl. Wates-Bagelen-Purworejo", type: "traffic", src: "OuMXkbHH_rE" },
-	  { id: 6, title: "CCTV SIMPANG ARTA TIRTA", location: "Jl. Magelang-Purworejo", type: "traffic", src: "x-KzzPRzdxQ" },
-    { id: 7, title: "CCTV TAMAN BAGELEN", location: "Jl. Bagelen - Cangkrep-Purworejo", type: "traffic", src: "3Xq0QoQtqHQ" },
+    { id: 1, title: "CCTV ROMANSA PURWOREJO", location: "Jl. Proklamasi-Plaosan-Purworejo", type: "public", src: "c4rHOdbJUws" },
+    { id: 2, title: "CCTV BUH LIWUNG", location: "Jl. WR Supratman No.90-Tambakrejo-Purworejo", type: "traffic", src: "mIOfAOtodWE" },
+    { id: 3, title: "CCTV BATAS MAGELANG", location: "Kalijambe-Bener-Purworejo", type: "traffic",  src: "lLhCMCOa-V0" },
+  	{ id: 4, title: "CCTV JOGO BOYO", location: "Jl. Daendels-Congot-Jogoboyo", type: "traffic",  src: "4BNAdi2LORs" },
+    { id: 5, title: "CCTV STASIUN WOJO", location: "Jl. Wates-Bagelen-Purworejo", type: "traffic", src: "3e3vd5iwey0" },
+	  { id: 6, title: "CCTV SIMPANG ARTA TIRTA", location: "Jl. Magelang-Purworejo", type: "traffic", src: "mhgxFbiZO2s" },
+    { id: 7, title: "CCTV TAMAN BAGELEN", location: "Jl. Bagelen-Purworejo", type: "traffic", src: "l3EC-j9mtZ8" },
+    { id: 8, title: "CCTV SIMPANG BRENGKELAN", location: "Jl. Veteran-Brengkelan-Purworejo", type: "traffic", src: "nugWCSddDKo" },
+    { id: 9, title: "CCTV TAMAN KOTA", location: "Jl. Gamlok-Baledono-Purworejo", type: "public", src: "9_RnOSP2L28" },
+    { id: 10, title: "CCTV KRESNA DUTA", location: "Jl. Urip Sumoharjo-Purworejo", type: "public", src: "Ksgx5z-7zHE" },
+    { id: 11, title: "CCTV ALUN-ALUN KUTOARJO", location: "Jl. Pangeran Diponegoro-Kutoarjo-Purworejo", type: "traffic", src: "NrUnE5dSQCk" },
+    { id: 12, title: "CCTV PINTU KELUAR KONGSI", location: "Jl. KHA Dahlan-Purworejo", type: "traffic", src: "X2H8MA0gXI0" },
+    { id: 13, title: "CCTV DEPAN JODO PLAZA", location: "Jl. KHA Dahlan-Purworejo", type: "traffic", src: "j4DvMySLYbY" },
   ];
 
   const videoList = document.getElementById('videoList');
